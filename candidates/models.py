@@ -5,7 +5,7 @@ class Candidate(models.Model):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=15)
     profile = models.TextField()
-    image = models.ImageField(upload_to='candidate_images/', null=True, blank=True)
+   #  image = models.ImageField(upload_to='candidate_images/', null=True, blank=True)
     address = models.CharField(max_length=255)  # Corrected spelling from 'adres' to 'address'
     skills = models.JSONField()  # Changed to JSONField for better structure
     languages = models.JSONField()  # Changed to JSONField for better structure
