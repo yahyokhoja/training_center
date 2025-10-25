@@ -1,4 +1,4 @@
-#!/home/yahyo/training_center/venv/bin/python3
+#!/home/yahyo/training_center/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
