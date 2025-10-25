@@ -19,3 +19,8 @@ staticfiles/
 # IDEs
 .vscode/
 .idea/
+# Виртуальное окружение
+venv/
+
+# Сборка статики
+/staticfiles/
