@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-*l*klf$gfixv-as*&=21gv1+-p4-pseac(okqtk1!3+dapl0)%
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+AUTH_USER_MODEL = 'main.CustomUser'
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'training-center-6j6m.onrender.com']
 
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'training_center.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # глобальная папка шаблонов
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,12 +105,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+AUTH_USER_MODEL = 'main.CustomUser'
+
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
