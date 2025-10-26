@@ -1,15 +1,23 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Training Center{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO динамический -->
+    {% block seo %}
+        <title>{% trans "Training Center — Your Learning & Jobs Platform" %}</title>
+        <meta name="description" content="{% trans "Training Center — platform for learning and job search. Register as candidate or employer." %}">
+        <meta name="keywords" content="{% trans "jobs, learning, vacancies, candidates, employers" %}">
+    {% endblock %}
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Иконка сайта -->
-    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
         body {
@@ -20,12 +28,12 @@
             flex-direction: column;
         }
         header {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0,0,0,0.2);
             padding: 10px 0;
         }
         footer {
             margin-top: auto;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0,0,0,0.2);
             padding: 10px 0;
             text-align: center;
             color: #eee;
@@ -42,12 +50,25 @@
     <!-- Навбар -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark container">
-            <a class="navbar-brand" href="/">Training Center</a>
+            <a class="navbar-brand" href="/">{% trans "Training Center" %}</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register/">Регистрация</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile/">Профиль</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">{% trans "Home" %}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register/">{% trans "Register" %}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/profile/">{% trans "Profile" %}</a></li>
+
+                    <!-- Dropdown для языков -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% if LANGUAGE_CODE == 'ru' %}RU{% elif LANGUAGE_CODE == 'en' %}EN{% else %}DE{% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/i18n/setlang/?language=ru">{% trans "Russian" %}</a></li>
+                            <li><a class="dropdown-item" href="/i18n/setlang/?language=en">{% trans "English" %}</a></li>
+                            <li><a class="dropdown-item" href="/i18n/setlang/?language=de">{% trans "German" %}</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -55,13 +76,12 @@
 
     <!-- Контент страниц -->
     <main class="container mt-5">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
     <!-- Подвал -->
     <footer>
-        © 2025 Training Center
+        © 2025 {% trans "Training Center" %}
     </footer>
 
     <!-- Bootstrap JS -->
