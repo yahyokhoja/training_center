@@ -13,4 +13,5 @@ urlpatterns += i18n_patterns(
     path('candidates/', include('candidates.urls')),
     path('employers/', include('employer.urls')),
     path('jobs/', include('Job.urls')),
+    path('users/', include('users.urls')),  # ✅ подключаем приложение
 )
