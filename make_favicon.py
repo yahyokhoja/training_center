@@ -62,7 +62,7 @@ main_position = ((img.width - text_w) // 2, (img.height - text_h) // 2 - 40)
 draw.text((main_position[0] + 3, main_position[1] + 3), text_main, font=font_main, fill=(0, 0, 0, 100))
 draw.text(main_position, text_main, font=font_main, fill=(255, 255, 255, 255))
 
-# --- Иконки (📚 + 🛠️) ---
+# --- Иконки (📚 👨🏼‍🎓+ 🛠️) ---
 book_icon = Image.open(BytesIO(BOOK_PNG)).resize((50, 50), Image.LANCZOS)
 tools_icon = Image.open(BytesIO(TOOLS_PNG)).resize((50, 50), Image.LANCZOS)
 

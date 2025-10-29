@@ -1,8 +1,9 @@
 """
-Django settings for training_center project with django-environ and PostgreSQL.
+Django settings for training_center project with django-environ and PostgreSQL (Render + local support).
 """
 
 import os
+import socket
 from pathlib import Path
 import environ
 from django.utils.translation import gettext_lazy as _
@@ -18,15 +19,46 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(
     DEBUG=(bool, False)
 )
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))  # локальный .env
 
 # =========================
 # SECURITY
 # =========================
-SECRET_KEY = env('SECRET_KEY')
-DEBUG = env('DEBUG')
+SECRET_KEY = env('SECRET_KEY', default='changeme-in-production')
+DEBUG = env('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'training-center-6j6m.onrender.com']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'training-center-6j6m.onrender.com'
+]
+
+# =========================
+# Detect environment (local or Render)
+# =========================
+hostname = socket.gethostname()
+IS_RENDER = 'render' in hostname.lower()
+
+# =========================
+# Database (PostgreSQL via .env)
+# =========================
+if IS_RENDER:
+    # Render uses internal hostname
+    POSTGRES_HOST = env('POSTGRES_HOST', default='dpg-d4041rre5dus7383jfp0-a')
+else:
+    # Local: use external hostname
+    POSTGRES_HOST = env('POSTGRES_HOST', default='dpg-d4041rre5dus7383jfp0-a.oregon-postgres.render.com')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('POSTGRES_DB', default='training_center_db'),
+        'USER': env('POSTGRES_USER', default='admin'),
+        'PASSWORD': env('POSTGRES_PASSWORD', default='password'),
+        'HOST': POSTGRES_HOST,
+        'PORT': env('POSTGRES_PORT', default='5432'),
+    }
+}
 
 # =========================
 # Application definition
@@ -78,35 +110,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'training_center.wsgi.application'
 
 # =========================
-# Database (PostgreSQL via .env)
-# =========================
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('POSTGRES_DB'),
-        'USER': env('POSTGRES_USER'),
-        'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': env('POSTGRES_HOST'),
-        'PORT': env('POSTGRES_PORT'),
-    }
-}
-
-# =========================
 # Password validation
 # =========================
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 AUTH_USER_MODEL = 'main.CustomUser'
@@ -129,9 +139,7 @@ LANGUAGES = [
     ('de', _('German')),
 ]
 
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale'),
-]
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
 # =========================
 # Static files
