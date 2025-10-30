@@ -30,7 +30,8 @@ DEBUG = env('DEBUG', default=False)
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'training-center-6j6m.onrender.com'
+    'training-center-6j6m.onrender.com',
+    '0.0.0.0',
 ]
 
 # =========================
