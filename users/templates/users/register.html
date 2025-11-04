@@ -1,12 +1,23 @@
-{% extends "main/base.html" %}
+{% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
-{% block title %}{% trans "Регистрация" %}{% endblock %}
 {% block content %}
 <h2>{% trans "Регистрация" %}</h2>
+
+{% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-success">{% trans "Зарегистрироваться" %}</button>
+    <button type="submit">{% trans "Зарегистрироваться" %}</button>
 </form>
+
+<p>{% trans "Уже есть аккаунт?" %} <a href="{% url 'users:login' %}">{% trans "Войти" %}</a></p>
 {% endblock %}

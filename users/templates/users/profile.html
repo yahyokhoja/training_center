@@ -1,10 +1,10 @@
-{% extends "main/base.html" %}
-{% load i18n %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}{% trans "Профиль" %}{% endblock %}
 {% block content %}
-<h2>{% trans "Профиль пользователя" %}</h2>
-<p>{% trans "Привет" %}, {{ user.username }}!</p>
-<a href="{% url 'logout' %}" class="btn btn-danger">{% trans "Выйти" %}</a>
+<h2>Профиль пользователя</h2>
+<p>Имя: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+<p>Телефон: {{ user.phone }}</p>
+<a href="{% url 'logout' %}">Выйти</a>
 {% endblock %}
-
