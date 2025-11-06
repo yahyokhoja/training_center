@@ -3,6 +3,7 @@ Django settings for training_center project with django-environ and PostgreSQL (
 """
 
 import os
+from re import DEBUG
 import socket
 from pathlib import Path
 import environ
@@ -26,6 +27,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))  # локальный .env
 # =========================
 SECRET_KEY = env('SECRET_KEY', default='changeme-in-production')
 DEBUG = env('DEBUG', default=False)
+#DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
