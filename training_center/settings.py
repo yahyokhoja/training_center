@@ -26,8 +26,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))  # локальный .env
 # SECURITY
 # =========================
 SECRET_KEY = env('SECRET_KEY', default='changeme-in-production')
-DEBUG = env('DEBUG', default=False)
-#DEBUG = True
+#DEBUG = env('DEBUG', default=False)
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -155,3 +155,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Default primary key field type
 # =========================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

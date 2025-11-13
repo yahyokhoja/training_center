@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+{% block content %}
+  <h1>Список работодателей</h1>
+
+  <a href="{% url 'employer:employer_create' %}">➕ Добавить работодателя</a>
+
+  {% if employers %}
+    <ul>
+      {% for emp in employers %}
+        <li>
+          <a href="{% url 'employer:employer_detail' emp.id %}">
+            {{ emp.company_name }}
+          </a>
+
+          {% if request.user == emp.user %}
+            <!-- Только владелец может редактировать и удалять -->
+            (<a href="{% url 'employer:employer_update' emp.id %}">Редактировать</a>)
+            (<a href="{% url 'employer:employer_delete' emp.id %}">Удалить</a>)
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Пока нет работодателей.</p>
+  {% endif %}
+{% endblock %}

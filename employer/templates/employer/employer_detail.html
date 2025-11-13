@@ -1,0 +1,12 @@
+<h1>{{ employer.company_name }}</h1>
+<p>Должность: {{ employer.position }}</p>
+<p>{{ employer.description }}</p>
+{% if employer.profile_image %}
+<img src="{{ employer.profile_image.url }}" width="200">
+{% endif %}
+{% if employer.profile_video %}
+<video width="320" controls>
+  <source src="{{ employer.profile_video.url }}">
+</video>
+{% endif %}
+<a href="{% url 'employer:employer_list' %}">Назад к списку</a>
