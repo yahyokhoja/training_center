@@ -6,7 +6,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 from django import forms
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, UserProfileEditForm
+
 
 User = get_user_model()
 
@@ -56,6 +57,27 @@ def login_view(request):
 @login_required
 def profile(request):
     return render(request, 'users/profile.html')
+
+@login_required
+def profile_edit(request):
+    if request.method == 'POST':
+        form = UserProfileEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Профиль успешно обновлён!"))
+            return redirect('main:index')
+        else:
+            # Вывести все ошибки формы (включая не-полевые)
+            for field, errors in form.errors.items():
+                label = form.fields[field].label if field in form.fields else ""
+                for error in errors:
+                    if label:
+                        messages.error(request, f"{label}: {error}")
+                    else:
+                        messages.error(request, error)
+    else:
+        form = UserProfileEditForm(instance=request.user)
+    return render(request, 'users/profile_edit.html', {'form': form})
 
 def logout_view(request):
     logout(request)

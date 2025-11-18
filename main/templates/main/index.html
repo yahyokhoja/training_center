@@ -1,16 +1,28 @@
 {% extends "main/base.html" %}
 {% load i18n %}
 
-
 {% block title %}Главная — Training Center{% endblock %}
 
 {% block content %}
-   
     <p class="mb-4">Выберите раздел:</p>
 
     <div class="d-flex justify-content-center gap-3">
-        <a class="btn btn-primary btn-lg" href="/candidates/">Кандидаты</a>
-        <a class="btn btn-success btn-lg" href="/employers/">Работодатели</a>
-        <a class="btn btn-warning btn-lg" href="/jobs/">Вакансии</a>
+        {% if user.is_authenticated %}
+            {% if user.role == 'candidate' %}
+                <a class="btn btn-primary btn-lg" href="/candidates/">{% trans "Кандидаты" %}</a>
+                <a class="btn btn-warning btn-lg" href="/jobs/">{% trans "Вакансии" %}</a>
+            {% elif user.role == 'employer' %}
+                <a class="btn btn-success btn-lg" href="/employers/">{% trans "Работодатели" %}</a>
+                <a class="btn btn-warning btn-lg" href="/jobs/">{% trans "Вакансии" %}</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="/candidates/">{% trans "Кандидаты" %}</a>
+                <a class="btn btn-success btn-lg" href="/employers/">{% trans "Работодатели" %}</a>
+                <a class="btn btn-warning btn-lg" href="/jobs/">{% trans "Вакансии" %}</a>
+            {% endif %}
+        {% else %}
+            <a class="btn btn-primary btn-lg" href="/candidates/">{% trans "Кандидаты" %}</a>
+            <a class="btn btn-success btn-lg" href="/employers/">{% trans "Работодатели" %}</a>
+            <a class="btn btn-warning btn-lg" href="/jobs/">{% trans "Вакансии" %}</a>
+        {% endif %}
     </div>
 {% endblock %}

@@ -3,10 +3,11 @@
 {% load i18n %}
 
 {% block content %}
-
 <h2>{% trans "Профиль пользователя" %}</h2>
 <p>{% trans "Имя" %}: {{ user.username }}</p>
 <p>{% trans "Email" %}: {{ user.email }}</p>
 <p>{% trans "Телефон" %}: {{ user.phone }}</p>
-<a href="{% url 'users:logout' %}">{% trans "Выйти" %}</a>
+<p>{% trans "Роль" %}: {{ user.get_role_display }}</p>
+<a class="btn btn-primary" href="{% url 'users:profile_edit' %}">{% trans "Редактировать профиль" %}</a>
+<a class="btn btn-link" href="{% url 'users:logout' %}">{% trans "Выйти" %}</a>
 {% endblock %}

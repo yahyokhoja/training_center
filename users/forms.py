@@ -15,3 +15,8 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class UserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'email', 'phone', 'role')

@@ -1,0 +1,13 @@
+<!-- filepath: /home/yahyo/training_center/users/templates/users/profile_edit.html -->
+{% extends "main/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2>{% trans "Редактировать профиль" %}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">{% trans "Сохранить" %}</button>
+    <a href="{% url 'users:profile' %}" class="btn btn-secondary">{% trans "Отмена" %}</a>
+</form>
+{% endblock %}
