@@ -1,0 +1,39 @@
+{% load static %}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  {# Статические страницы #}
+  {% for url in static_urls %}
+  <url>
+    <loc>{{ request.build_absolute_uri:url }}</loc>
+    <lastmod>{{ now "Y-m-d" }}</lastmod>
+    {% for lang in languages %}
+      <xhtml:link rel="alternate" hreflang="{{ lang }}" href="{{ request.build_absolute_uri '/'|add:lang|add:url }}" />
+    {% endfor %}
+  </url>
+  {% endfor %}
+
+  {# Страницы работодателей #}
+  {% for emp in employers %}
+  <url>
+    <loc>{{ request.build_absolute_uri }}/employers/{{ emp.id }}/</loc>
+    <lastmod>{{ emp.created_at|default:now:"Y-m-d" }}</lastmod>
+    {% for lang in languages %}
+      <xhtml:link rel="alternate" hreflang="{{ lang }}" href="{{ request.build_absolute_uri }}/{{ lang }}/employers/{{ emp.id }}/" />
+    {% endfor %}
+  </url>
+  {% endfor %}
+
+  {# Профили пользователей #}
+  {% for u in users %}
+  <url>
+    <loc>{{ request.build_absolute_uri }}/users/profile/{{ u.id }}/</loc>
+    <lastmod>{{ u.date_joined|date:"Y-m-d" }}</lastmod>
+    {% for lang in languages %}
+      <xhtml:link rel="alternate" hreflang="{{ lang }}" href="{{ request.build_absolute_uri }}/{{ lang }}/users/profile/{{ u.id }}/" />
+    {% endfor %}
+  </url>
+  {% endfor %}
+
+</urlset>

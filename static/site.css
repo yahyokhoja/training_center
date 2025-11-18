@@ -1,0 +1,107 @@
+/* ------------------------------
+   Общие стили
+------------------------------ */
+
+/* Глобальный шрифт */
+body {
+    font-family: "Inter", "Segoe UI", sans-serif;
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  /* Контейнер */
+  .container {
+    max-width: 960px;
+  }
+  
+  /* Заголовки */
+  h1, h2, h3 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  /* Ссылки */
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Кнопки */
+  .btn {
+    border-radius: 8px;
+    padding: 6px 14px;
+  }
+  
+  /* Карточки */
+  .card {
+    border-radius: 14px !important;
+    overflow: hidden;
+    transition: 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  }
+  
+  /* Отступы */
+  .mb-3 { margin-bottom: 1rem !important; }
+  
+  /* ------------------------------
+     ТЁМНАЯ ТЕМА
+  ------------------------------ */
+  
+  html[data-theme="dark"],
+  body[data-theme="dark"] {
+    background: #121212 !important;
+    color: #eaeaea !important;
+  }
+  
+  body[data-theme="dark"] .navbar,
+  body[data-theme="dark"] footer {
+    background: #1d1d1d !important;
+    color: #eaeaea !important;
+    border-color: #333 !important;
+  }
+  
+  body[data-theme="dark"] .card {
+    background: #1a1a1a;
+    border-color: #333;
+  }
+  
+  body[data-theme="dark"] .form-control {
+    background: #222;
+    color: #eaeaea;
+    border-color: #444;
+  }
+  
+  body[data-theme="dark"] .alert {
+    background: #222 !important;
+    color: #fff !important;
+    border-color: #555 !important;
+  }
+  
+  body[data-theme="dark"] a {
+    color: #6ab4ff;
+  }
+  
+  /* ------------------------------
+     АДАПТИВНОСТЬ
+  ------------------------------ */
+  
+  /* На телефонах — увеличиваем удобство */
+  @media (max-width: 576px) {
+    h1 { font-size: 1.6rem; }
+    h2 { font-size: 1.3rem; }
+  
+    .btn {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .navbar-brand {
+      font-size: 1.2rem;
+    }
+  }
+  

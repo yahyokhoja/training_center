@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 from django import forms
+from .forms import CustomUserCreationForm
 
 User = get_user_model()
 
@@ -30,13 +31,14 @@ class LoginForm(AuthenticationForm):
 
 def register(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            login(request, user)
             messages.success(request, _("Вы успешно зарегистрированы!"))
-            return redirect('users:login')
+            return redirect('users:profile')
     else:
-        form = RegisterForm()
+        form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
 
 def login_view(request):
