@@ -9,3 +9,5 @@ def job_detail(request, id):
 
 
 # Create your views here.
+def job_create(request,id) ->HttpResponse:
+    return render 

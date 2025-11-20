@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<h2>Добавить навык</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary">Добавить</button>
+</form>
+
+<a href="{% url 'candidates:cv_detail' %}">Назад</a>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "main/base.html" %}
+{% load i18n %}
+
+{% block title %}CV — Training Center{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{{ cv.full_name }}</h2>
+    <p><strong>{% trans "Возраст:" %}</strong> {{ cv.age }}</p>
+    <p><strong>{% trans "Опыт:" %}</strong> {{ cv.experience }}</p>
+    <p><strong>{% trans "Образование:" %}</strong> {{ cv.education }}</p>
+
+    <a href="{% url 'candidates:cv_edit' %}" class="btn btn-primary mb-3">{% trans "Редактировать CV" %}</a>
+
+    <h4>{% trans "Навыки" %}</h4>
+    <ul class="list-group mb-3">
+        {% for skill in cv.skills.all %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ skill.name }} — {{ skill.get_level_display }}
+                <a href="{% url 'candidates:skill_delete' skill.id %}" class="btn btn-sm btn-danger">{% trans "Удалить" %}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">{% trans "Нет навыков" %}</li>
+        {% endfor %}
+    </ul>
+
+    <h5>{% trans "Добавить навык" %}</h5>
+    <form method="post" action="{% url 'candidates:skill_add' %}" class="d-flex gap-2 mb-4">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="{% trans 'Название навыка' %}" class="form-control" required>
+        <select name="level" class="form-select" required>
+            <option value="beginner">{% trans "Начальный" %}</option>
+            <option value="intermediate">{% trans "Средний" %}</option>
+            <option value="advanced">{% trans "Продвинутый" %}</option>
+            <option value="expert">{% trans "Эксперт" %}</option>
+        </select>
+        <button type="submit" class="btn btn-primary">{% trans "Добавить" %}</button>
+    </form>
+</div>
+{% endblock %}

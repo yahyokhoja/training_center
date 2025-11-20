@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+{% load i18n form_tags %}
+
+{% block title %}CV — Training Center{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{% trans "Создание/Редактирование CV" %}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">{{ form.full_name.label_tag }} {{ form.full_name|add_class:"form-control" }}</div>
+        <div class="mb-3">{{ form.age.label_tag }} {{ form.age|add_class:"form-control" }}</div>
+        <div class="mb-3">{{ form.experience.label_tag }} {{ form.experience|add_class:"form-control" }}</div>
+        <div class="mb-3">{{ form.education.label_tag }} {{ form.education|add_class:"form-control" }}</div>
+        <button type="submit" class="btn btn-success">{% trans "Сохранить" %}</button>
+        <a href="{% url 'candidates:cv_detail' %}" class="btn btn-secondary">{% trans "Отмена" %}</a>
+    </form>
+</div>
+{% endblock %}

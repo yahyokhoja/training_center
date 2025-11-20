@@ -1,7 +1,14 @@
 from django.urls import path
 from . import views
 
+app_name = "candidates"
+
 urlpatterns = [
-    path('', views.candidate_list, name='candidate_list'),
-    path('<int:id>/', views.candidate_detail, name='candidate_detail'),
+    path("create/", views.cv_create, name="cv_create"),
+    path("detail/", views.cv_detail, name="cv_detail"),
+    path("edit/", views.cv_edit, name="cv_edit"),
+
+    # Skills
+    path("skill/add/", views.skill_add, name="skill_add"),
+    path("skill/delete/<int:skill_id>/", views.skill_delete, name="skill_delete"),
 ]
