@@ -1,0 +1,20 @@
+
+{% extends "main/base.html" %}
+{% block content %}
+<h2>Список вакансий</h2>
+
+<ul>
+    {% for job in jobs %}
+    <li>
+        <a href="{% url 'Job:job_detail' job.pk %}">
+            {{ job.title }}
+        </a>
+        — {{ job.employer.username }}
+    </li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated and user.role == "employer" %}
+<a href="{% url 'Job:create_job' %}" class="btn btn-primary">Создать вакансию</a>
+{% endif %}
+{% endblock %}

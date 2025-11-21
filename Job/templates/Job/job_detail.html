@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h2>{{ job.title }}</h2>
+<p>{{ job.description }}</p>
+<p><strong>Создатель:</strong> {{ job.employer.username }}</p>
+
+{% if user == job.employer %}
+<a href="{% url 'Job:edit_job' job.pk %}" class="btn btn-warning">Редактировать</a>
+<a href="{% url 'Job:delete_job' job.pk %}" class="btn btn-danger">Удалить</a>
+{% endif %}
+
+<a href="{% url 'Job:job_list' %}" class="btn btn-secondary mt-3">Назад</a>
+{% endblock %}
