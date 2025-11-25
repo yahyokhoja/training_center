@@ -1,20 +1,54 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<h2>{% trans "Профиль пользователя" %}</h2>
+<p>{% trans "Имя" %}: {{ user.username }}</p>
+<p>{% trans "Email" %}: {{ user.email }}</p>
+<p>{% trans "Телефон" %}: {{ user.phone }}</p>
+<p>{% trans "Роль" %}: {{ user.get_role_display }}</p>
+<a class="btn btn-primary" href="{% url 'users:profile_edit' %}">{% trans "Редактировать профиль" %}</a>
+<a class="btn btn-link" href="{% url 'users:logout' %}">{% trans "Выйти" %}</a>
+{% endblock %}
+
+
+
+
+vuiew.py
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 from django import forms
-from django.core.paginator import Paginator
-
 from .forms import CustomUserCreationForm, UserProfileEditForm
-from candidates.models import CV
-from Job.models import Job
+
 
 User = get_user_model()
 
-# ===================== Регистрация =====================
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    phone = forms.CharField(required=False, max_length=20)
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "phone", "password1", "password2")
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data.get('email', '')
+        user.phone = self.cleaned_data.get('phone', '')
+        if commit:
+            user.save()
+        return user
+
+class LoginForm(AuthenticationForm):
+    pass
+
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -27,27 +61,22 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
 
-# ===================== Вход =====================
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request=request, data=request.POST)
+        form = LoginForm(request=request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
             return redirect('users:profile')
         messages.error(request, _("Неверное имя пользователя или пароль."))
     else:
-        form = AuthenticationForm(request=request)
+        form = LoginForm(request=request)
     return render(request, 'users/login.html', {'form': form})
 
-# ===================== Выход =====================
 @login_required
-def logout_view(request):
-    logout(request)
-    messages.info(request, _("Вы вышли из аккаунта."))
-    return redirect('users:login')
+def profile(request):
+    return render(request, 'users/profile.html')
 
-# ===================== Редактирование профиля =====================
 @login_required
 def profile_edit(request):
     if request.method == 'POST':
@@ -55,8 +84,9 @@ def profile_edit(request):
         if form.is_valid():
             form.save()
             messages.success(request, _("Профиль успешно обновлён!"))
-            return redirect('users:profile')
+            return redirect('main:index')
         else:
+            # Вывести все ошибки формы (включая не-полевые)
             for field, errors in form.errors.items():
                 label = form.fields[field].label if field in form.fields else ""
                 for error in errors:
@@ -68,19 +98,7 @@ def profile_edit(request):
         form = UserProfileEditForm(instance=request.user)
     return render(request, 'users/profile_edit.html', {'form': form})
 
-# ===================== Профиль пользователя =====================
-@login_required
-def profile(request):
-    context = {}
-    if request.user.role == "employer":
-        jobs_list = request.user.jobs.all().order_by('-created_at')
-        paginator = Paginator(jobs_list, 5)  # 5 вакансий на страницу
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['jobs'] = page_obj
-        context['is_paginated'] = page_obj.has_other_pages()
-        context['page_obj'] = page_obj
-        context['paginator'] = paginator
-    elif request.user.role == "candidate":
-        context['cv'] = getattr(request.user, 'cv', None)
-    return render(request, "users/profile.html", context)
+def logout_view(request):
+    logout(request)
+    messages.info(request, _("Вы вышли из аккаунта."))
+    return redirect('users:login')
