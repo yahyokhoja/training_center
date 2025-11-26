@@ -10,7 +10,11 @@
     <p><strong>{% trans "Опыт:" %}</strong> {{ cv.experience }}</p>
     <p><strong>{% trans "Образование:" %}</strong> {{ cv.education }}</p>
 
-    <a href="{% url 'candidates:cv_edit' %}" class="btn btn-primary mb-3">{% trans "Редактировать CV" %}</a>
+<a href="{% url 'candidates:cv_edit' cv.pk %}" class="btn btn-primary mb-3">
+    {% trans "Редактировать CV" %}
+</a>
+
+
 
     <h4>{% trans "Навыки" %}</h4>
     <ul class="list-group mb-3">
@@ -25,7 +29,8 @@
     </ul>
 
     <h5>{% trans "Добавить навык" %}</h5>
-    <form method="post" action="{% url 'candidates:skill_add' %}" class="d-flex gap-2 mb-4">
+    <form method="post" action="{% url 'candidates:skill_add' cv.pk %}" class="d-flex gap-2 mb-4">
+
         {% csrf_token %}
         <input type="text" name="name" placeholder="{% trans 'Название навыка' %}" class="form-control" required>
         <select name="level" class="form-select" required>

@@ -9,12 +9,25 @@
 
     <form method="post">
         {% csrf_token %}
+
         <div class="mb-3">{{ form.full_name.label_tag }} {{ form.full_name|add_class:"form-control" }}</div>
         <div class="mb-3">{{ form.age.label_tag }} {{ form.age|add_class:"form-control" }}</div>
         <div class="mb-3">{{ form.experience.label_tag }} {{ form.experience|add_class:"form-control" }}</div>
         <div class="mb-3">{{ form.education.label_tag }} {{ form.education|add_class:"form-control" }}</div>
+
         <button type="submit" class="btn btn-success">{% trans "Сохранить" %}</button>
-        <a href="{% url 'candidates:cv_detail' %}" class="btn btn-secondary">{% trans "Отмена" %}</a>
+
+        {% if form.instance.pk %}
+            <!-- Есть CV → редактирование -->
+            <a href="{% url 'candidates:cv_detail' form.instance.pk %}" class="btn btn-secondary">
+                {% trans "Отмена" %}
+            </a>
+        {% else %}
+            <!-- CV ещё нет → создание -->
+            <a href="{% url 'users:profile' %}" class="btn btn-secondary">
+                {% trans "Отмена" %}
+            </a>
+        {% endif %}
     </form>
 </div>
 {% endblock %}
